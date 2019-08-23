@@ -1,7 +1,8 @@
 ---
-title: "Docker Example Solution Brief"
-summary: "Docker Solution Briefs enable you to integrate the Docker container platform with popular 3rd party ecosystem solutions. This Solution Brief is a self-documenting guide to writing your own. Clone
-this repo and go. Make sure to edit these tags."
+title: "Deploying Portworx on Docker Enterprise Solution Brief"
+summary: "Portworx is one of the leading Software-Defined Storage solutions for
+  container deployments. This document is a walkthrough of installing Portworx on
+  a Docker Enterprise 3.0 install."
 type: guide
 author: khudgins
 visibleto: loggedinleads
@@ -9,57 +10,64 @@ campaign: "docker-certified-infrastructure"
 product:
   - ee
 testedon:
-  - "ee-17.06.2-ee-7"
-  - "ucp-2.2.5"
-  - "dtr-2.4.2"
+  - "v1.14.3-docker-2	"
+  - "ucp-3.0"
+  - "dtr-2.7.1"
 platform:
   - linux
 tags:
   - "solution-brief"
   - storage
-dateModified: "2018-04-24T13:24:21+00:00"
-dateModified_unix: 1524576261
+dateModified: "2019-08-22T13:24:21+00:00"
+dateModified_unix: 1566498118
 uniqueid: KB000669
 ---
 ## Overview
 
-Docker Solution Briefs enable you to integrate the Docker Enterprise Edition (EE) container platform with popular 3rd party ecosystem solutions for networking, load balancing, storage, logging and monitoring, access management, and more.
-
-Add a description of your solution brief here. You should include a short blurb of your product and how it integrates with Docker.
+Portworx is one of the leading Software-Defined Storage solutions for container deployments. This document is a walkthrough of installing Portworx on a Docker Enterprise 3.0 install for Kubernetes workloads.
 
 ## Prerequisites
 
-List the assets that your users need to successfully complete the tasks in your solution brief. Include links to related Docker Solution Briefs or install guides to describe the beginning state of the users environment that you require to complete your instructions.
+The following prerequisites are required to successfully complete this guide:
 
-As an example (edit this to fit your requirements):
 
-- [Docker EE 17.06 Platform on VMware vSphere](https://success.docker.com/article/vsphere-storage/)
-- VSphere 6.0
-- Linux kernel 4.2.1 minimum
+- Docker Enterprise 3.0 installed with at least two Kubernetes worker nodes
+- A license for, or trial of Portworx Enterprise
+- A workstation with the kubectl command bound to your Docker Enterprise install. (This can be the installation's master node)
 
 ## Installation and Configuration
 
-Start your brief by cloning this repository. You don't have to fork it - just clone it (or make a reasonable facsimile) and set up your own repository. Docker needs access to it for submodule inclusion into our publishing release process.
-
-Provide detailed, step-by-step instructions for your Solution Brief here. If there is automation involved, then start with the inclusion of your automation code into a Docker EE deployment, and then how to make sure the automation run starts correctly.
-
 1. First step:
-    Include shell and/or code snippets for each step
+    Add an unmounted disk of 50Gb min to each worker node. You should be able to see the unmounted disk with the following command once you log in to each worker node
 
     ```
-    % git clone git@github.com/docker/dci-brief-example
+    NAME    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+    loop0     7:0    0 88.5M  1 loop /snap/core/7270
+    loop1     7:1    0   18M  1 loop /snap/amazon-ssm-agent/1455
+    loop2     7:2    0 10.1M  1 loop /snap/kubectl/1139
+    loop3     7:3    0 88.7M  1 loop /snap/core/7396
+    xvda    202:0    0   20G  0 disk
+    └─xvda1 202:1    0   20G  0 part /
+    xvdb    202:16   0  100G  0 disk /var/lib/docker
+    xvdf    202:80   0  150G  0 disk
+
     ```
 
 2. Second step:
-    Set up your own git repository hosting. For example, if you're using GitHub, log in and create a new repo. Then, point your cloned copy of our sample to the new, empty repository in GitHub:
+    Confirm the Docker Enterprise version with the following command on your prepared workstation.
 
     ```
-    git remote add origin git@github.com:yourcompany/name_of_your_new_solution_brief
-    git push -u origin master
+    $ kubectl version --short | awk -Fv '/Server Version: / {print $3}'
+    1.14.3-docker-2
     ```
 
 3. Third step:
-    Use this readme.md file as an example, and write your own procedural docs to install/integrate your product with Docker EE:
+
+    In this step, we will use Portworx's online install wizard to create a Kubernetes YAML deployment definition.
+
+    In a web browser, navigate to http://install.portworx.com and enter the Docker version
+
+    [example 1]: example_1.png "install.portworx.com screen 1" 
 
     ```
     vi readme.md
