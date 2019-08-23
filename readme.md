@@ -67,7 +67,7 @@ The following prerequisites are required to successfully complete this guide:
 
     In a web browser, navigate to http://install.portworx.com and enter the Docker version
 
-    ![example 1] (example_1.png) "install.portworx.com screen 1" 
+    ![example 1](example1.png "install.portworx.com screen 1")
 
     ```
     vi readme.md
