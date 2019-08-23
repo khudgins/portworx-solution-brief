@@ -65,37 +65,40 @@ The following prerequisites are required to successfully complete this guide:
 
     In this step, we will use Portworx's online install wizard to create a Kubernetes YAML deployment definition.
 
-    In a web browser, navigate to http://install.portworx.com and enter the Docker version
+    In a web browser, navigate to http://install.portworx.com and enter the Docker version and select "Portworx hosted etcd" under the ETCD section, and click "Next."
 
     ![example 1](example1.png "install.portworx.com screen 1")
 
+    On the next page, select "OnPrem" and leave everything else default. Click "Next."
+
+    ![example 2](example2.png "install.portworx.com screen 2")
+
+    On the third page, leave everything default. Click "Next."
+
+    ![example 3](example3.png "install.portworx.com screen 3")
+
+    On the Customize page, select "None" in the Customize section. Click "Finish."
+
+    ![example 4](example4.png "install.portworx.com screen 4")
+
+    On the last screen, you can either copy the example command to run from your workstation, or download the YAML spec file for inspection and alterations.
+
+    ![example 5](example5.png "install.portworx.com screen 5")
+
+    Note: if you use the spec file, open it up in a text editor and replace the `{UUID}` value with a new UUID. You can generate one at a linux command prompt via:
+
     ```
-    vi readme.md
-    git commit -m "updated some docs"
+    $ uuid
+    056d3c88-c3b0-11e9-9d56-ef363149603d
     ```
 
-    Make sure to use step-by-step examples:
+    Then apply the spec file in the usual way with the kubectl command:
 
     ```
-    % docker info
+    $ kubectl apply -f spec.yaml
     ```
 
-    and include output when necessary:
 
-    ```
-    Containers: 0
-    Running: 0
-    Paused: 0
-    Stopped: 0
-    Images: 0
-    Server Version: 17.12.0-ce
-    ...
-
-    Experimental: true
-    Insecure Registries:
-     127.0.0.0/8
-    Live Restore Enabled: false
-    ```
 
 
 ## Best Practice Recommendations
