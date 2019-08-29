@@ -100,19 +100,43 @@ The following prerequisites are required to successfully complete this guide:
 
 
 
-
-## Best Practice Recommendations
-
-When updating your solution brief, Docker should automatically pull in your changes during our documentation releases. In the event you need to get the content published faster (ie: bugfix issues), contact your Docker partner representative so they can notify the publishing team.
-
 ## Monitoring and Troubleshooting
 
-Add operational instructions as needed. If there are any gotchas or difficult parts, troubleshooting advice goes here as well.
+Portworx maintains documentation at <https://docs.portworx.com>.
+
+They have sections with advice for monitoring and production use, as well as troubleshooting your installation.
+
+Included here are a few commands that are useful in diagnosing installation issues:
+
+Describe PX pods:
+
+```
+kubectl describe pods -l name=portworx -n kube-system
+```
+
+Get PX cluster status:
+
+```
+PX_POD=$(kubectl get pods -l name=portworx -n kube-system -o jsonpath='{.items[0].metadata.name}')
+kubectl exec $PX_POD -n kube-system -- /opt/pwx/bin/pxctl status
+```
+
+Recent Portworx logs can be gathered by using this kubectl command:
+
+```
+kubectl logs -n kube-system -l name=portworx --tail=99999
+```
+
+If you have access to a particular node, you can use this journalctl command to get all Portworx logs:
+
+```
+journalctl -lu portworx*
+```
 
 ## Further Reading
 
 Refer to the following links for additional information:
 
-- <https://github.com/vmware/vsphere-storage-for-docker>
-- <http://vmware.github.io/vsphere-storage-for-docker/documentation/>
-- <https://bintray.com/vmware/vDVS/VIB/>
+- <https://docs.portworx.com>
+- <https://docs.portworx.com/cloud-references/deployment-arch/>
+- <https://docs.portworx.com/reference/knowledge-base/>
